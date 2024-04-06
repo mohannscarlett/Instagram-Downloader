@@ -247,18 +247,7 @@ def get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types):
             # look_for_audio = True
             for j in list_of_video_types:
                 if j in i and "&bytestart=0&byteend=" in i:
-                    """look_for_audio = False
 
-                    byte_end_index = i.find('&byteend=')
-                    byteend = None
-                    if byte_end_index != -1:  # Check if '&byteend' is found in the URL
-                        byteend = int(i[byte_end_index + len('&byteend='):])
-
-                    if len(video_byte_ends) >= 1 and video_byte_ends[len(video_byte_ends)-1]+1 == byteend or video_byte_ends[len(video_byte_ends)-1]-1 == byteend:
-                        video_byte_ends.append(byteend)
-                        continue
-                    video_byte_ends.append(byteend)
-                    """
                     # print("here")
                     index = i.find('&bytestart')
                     if index != -1:  # Check if '&bytestart' is found in the URL
@@ -268,53 +257,19 @@ def get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types):
                         if byte_end_index != -1:  # Check if '&bytestart' is found in the URL
                             video_byte_ends.append(int(i[byte_end_index + len('&byteend='):]))
 
-                        """ lowquality_found = False
-                        for k in list_of_video_types:
-                            if position != 0 and k in video_links_raw[position-1] and "&bytestart=0&byteend=" not in video_links_raw[position-1]:
-                                index_if_bytestart = video_links_raw[position-1].find('&bytestart')
-                                if index_if_bytestart != -1:
-                                    visual_video_links_lowquality.append(video_links_raw[position+1][:index_if_bytestart])
-                                    lowquality_found = True
 
-                            if lowquality_found == False and position + 1 != len(video_links_raw) and k in video_links_raw[position+1] and "&bytestart=0&byteend=" not in video_links_raw[position+1]:
-                                index_if_bytestart = video_links_raw[position + 1].find('&bytestart')
-                                if index_if_bytestart != -1:
-                                    visual_video_links_lowquality.append(
-                                        video_links_raw[position + 1][:index_if_bytestart])"""
                     found = True
 
-            """if look_for_audio == False:
-                continue"""
+
 
             for j in list_of_audio_types:
                 if j in i and "&bytestart=0&byteend=" in i:
-                    """
-                    byte_end_index = i.find('&byteend=')
-                    byteend = None
-                    if byte_end_index != -1:  # Check if '&byteend' is found in the URL
-                        byteend = int(i[byte_end_index + len('&byteend='):])
-                        audio_byte_ends.append(byteend)
-                    for g in audio_byte_ends:
-                        if g == byteend or g-1 == byteend:
-                            break
-                    # print("there")"""
+
                     index = i.find('&bytestart')
                     if index != -1:  # Check if '&bytestart' is found in the URL
                         audio_video_links_highquality.append(i[:index])
 
-                        """lowquality_found = False
-                        for k in list_of_audio_types:
-                            if position != 0 and k in video_links_raw[position-1] and "&bytestart=0&byteend=" not in video_links_raw[position-1]:
-                                index_if_bytestart = video_links_raw[position-1].find('&bytestart')
-                                if index_if_bytestart != -1:
-                                    audio_video_links_lowquality.append(video_links_raw[position+1][:index_if_bytestart])
-                                    lowquality_found = True
 
-                            if lowquality_found == False and position + 1 != len(video_links_raw) and k in video_links_raw[position+1] and "&bytestart=0&byteend=" not in video_links_raw[position+1]:
-                                index_if_bytestart = video_links_raw[position + 1].find('&bytestart')
-                                if index_if_bytestart != -1:
-                                    audio_video_links_lowquality.append(
-                                        video_links_raw[position + 1][:index_if_bytestart])"""
                     found = True
         if found == False:
             raise NoSuchElementException("Error 306")
@@ -324,44 +279,9 @@ def get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types):
         # quit()
 
     if len(visual_video_links_highquality) == len(audio_video_links_highquality):
-        """print("Returned high quality variants")
-        for i in visual_video_links_highquality:
-            print(i)
-        print("=============================================")
 
-        for i in audio_video_links_highquality:
-            print(i)
-        print("=============================================")
-
-        for i in visual_video_links_lowquality:
-            print(i)
-        print("=============================================")
-
-        for i in audio_video_links_lowquality:
-            print(i)
-        print("=============================================")
-        print(len(visual_video_links_highquality))
-        print(len(audio_video_links_highquality))
-        print(len(visual_video_links_lowquality))
-        print(len(audio_video_links_lowquality))"""
         return [visual_video_links_highquality, audio_video_links_highquality]
 
-        # print(len(visual_video_links_highquality))
-        # print(len(audio_video_links_highquality))
-
-        # return [visual_video_links_lowquality, audio_video_links_lowquality]
-
-    """print("Number of videos and audios in a scrolling post are not equal")
-    for i in visual_video_links_highquality:
-        print(i)
-    print("=============================================")
-
-    for i in audio_video_links_highquality:
-        print(i)
-    print("=============================================")"""
-
-    # print(len(visual_video_links_highquality))
-    # print(len(audio_video_links_highquality))
 
     return ["", ""]
 
@@ -526,19 +446,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
 
                 except NoSuchElementException:
                     break
-            """
-            while True:
-                try:
-                    next_button = post_container.find_element(by=By.XPATH, value='.//*[@class=" _afxv _al46 _al47"]')
-                    driver.execute_script("arguments[0].click();", next_button)
 
-                    next_button_clicked = True
-                    image_found = get_image_link(driver, post_container, final_picture_set, 1)
-                    time.sleep(video_render_sleep)
-
-                except NoSuchElementException:
-                    break
-            """
             if instance_of_video >= 1:
                 try:
                     video_link = get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types)
@@ -620,32 +528,6 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
     failed_video_downloads = set()
     failed_image_downloads = set()
 
-
-    """for i in failed_visual_videos:
-        print("Failed Visual video: " + i)
-    for i in failed_audio_videos:
-        print("Failed audio video: " + i)"""
-
-
-
-
-    """
-    if len(failed_video_downloads) > 0:
-        print("Attempting to download videos that failed to download...", end='\n\n')
-        # failed_video_downloads = download_insta_video(profile_name, failed_video_downloads)
-        if len(failed_video_downloads) > 0:
-            print("Cannot download these videos:", end='\n\n')
-            for i in failed_video_downloads:
-                print(i + " :Video")
-
-    if len(failed_image_downloads) > 0:
-        print("Attempting to download images that failed to download...", end='\n\n')
-        # failed_image_downloads = download_insta_video(profile_name, failed_image_downloads)
-        if len(failed_image_downloads) > 0:
-            print("Cannot download these images:", end='\n\n')
-            for i in failed_image_downloads:
-                print(i + " :Image")
-    """
     with open("Failed.txt", 'w'):
         pass
     for i in post_url_set:
@@ -653,10 +535,5 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
     print("Finished Trying to Download Missed Posts but the Above were Missed!!")
 
 
-    """except Exception as e:
-        print(e)
-        print(
-            "\nCritial program error, likely causes:\nWifi issues\nInvalid Profile link\nPrivate profile\nWrong username or password")
-        for i in post_url_set:
-            print("Failed this post: " + i)"""
+
 

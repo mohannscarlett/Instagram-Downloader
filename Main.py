@@ -56,6 +56,7 @@ if __name__ == '__main__':
     video_identifying_string_12 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9oaW"
     video_identifying_string_13 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMV92MS"
     video_identifying_string_14 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV8"
+    video_identifying_string_15 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMTA"
 
     audio_identifying_string_1 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV9"
     audio_identifying_string_2 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfbG5"
@@ -83,6 +84,8 @@ if __name__ == '__main__':
     list_of_video_types.append(video_identifying_string_12)
     list_of_video_types.append(video_identifying_string_13)
     list_of_video_types.append(video_identifying_string_14)
+    list_of_video_types.append(video_identifying_string_15)
+
 
     list_of_audio_types = []
     list_of_audio_types.append(audio_identifying_string_1)
