@@ -294,7 +294,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
     page_loading_time = 7.5
     scroll_timeout = 0.5
     video_render_sleep = 1.25
-    video_render_sleep_single = 1.25
+    video_render_sleep_single = 1.5
 
     final_picture_set = set()
     final_video_set = set()
@@ -330,6 +330,8 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
         files_from_current_post = []
         # driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
         # time.sleep(scroll_timeout)
+        driver.execute_script("window.performance.clearResourceTimings();")
+        time.sleep(video_render_sleep_single)
         driver.get(i)
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,
                                                                         '//*[@class="x1yvgwvq x1dqoszc x1ixjvfu xhk4uv x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x78zum5 x1q0g3np xh8yej3"]')))
@@ -346,7 +348,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
         next_button_clicked = False
         next_button = None
 
-        time.sleep(video_render_sleep)
+        time.sleep(0)
         if_worked = True
 
         single_content = True
@@ -432,7 +434,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
 
                     next_button_clicked = True
 
-                    time.sleep(video_render_sleep_single)
+                    time.sleep(video_render_sleep)
 
                     image_found = get_image_link(driver, post_container, final_picture_set, 0)
                     if isinstance(image_found, str) and image_found not in final_picture_set:
@@ -450,14 +452,14 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
             if instance_of_video >= 1:
                 try:
                     video_link = get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types)
-                    print(video_link)
+                    #print(video_link)
                     for i in range (len(video_link[0])):
                         if (download_insta_video(profile_name, -1, video_link[0][i], current_directory) == "" and
                             download_insta_video(profile_name, -2, video_link[1][i], current_directory)) == "":
                             current_date_time = datetime.now()
                             current_date = current_date_time.date()
                             file_name = profile_name + "_" + str(current_file_number) + "_" + str(current_date) + ".mp4"
-                            print("video link: " + video_link[0][i], "Audio link: " + video_link[1][i])
+                            #print("video link: " + video_link[0][i], "Audio link: " + video_link[1][i])
 
                             if_worked = True
                             if video_link[0][i] == "" and video_link[1][i] == "":
@@ -494,37 +496,20 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
 
                         else:
                             for i in video_link:
-                                print("Unsure of why this executes, testing")
+                                print("Unexpected program error, exiting.")
+                                driver.quit
                                 quit()
                                 #print("URL: " + video_link[i] + "Failed to print")
                 except Exception as e:
                     print(e)
 
-        buttons = None
-        next_post = None
-        try:
-            buttons = driver.find_elements(by=By.XPATH, value='//*[@class="_abl-"]')
-            for i in buttons:
-                try:
-                    next_post = i.find_element(by=By.XPATH,
-                                               value='.//*[@style="display: inline-block; transform: rotate(90deg);"]')
-                    driver.execute_script("arguments[0].click();", i)
-
-                    break
-                except NoSuchElementException:
-                    pass
-            driver.execute_script("window.performance.clearResourceTimings();")
-        except Exception:
-            print("Program error")
-            quit()
-
-
+       
         number_posts_downloaded += 1
         sys.stdout.write("\rDownloaded posts:  " + str(number_posts_downloaded) + "/" + str(number_of_posts) + "\n")
         sys.stdout.flush()
+        print()
         posts_visited += 1
 
-    print()
     failed_video_downloads = set()
     failed_image_downloads = set()
 

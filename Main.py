@@ -31,6 +31,14 @@ from mutagen.mp4 import MP4, MP4Cover
 from download_instagram_profile import download_profile
 from download_saved_posts import download_saved_posts
 
+def clear_input_buffer():
+    try:
+        import msvcrt
+        while msvcrt.kbhit():
+            msvcrt.getch()
+    except ImportError:
+        # For non-Windows systems
+        sys.stdin.read()
 
 if __name__ == '__main__':
     video_identifying_string_1 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF92cDll"
@@ -57,6 +65,7 @@ if __name__ == '__main__':
     video_identifying_string_13 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMV92MS"
     video_identifying_string_14 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV8"
     video_identifying_string_15 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMTA"
+    video_identifying_string_16 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmV4cGVyaW1lbnRhbC1DMy5kYXNoX2hp"
 
     audio_identifying_string_1 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV9"
     audio_identifying_string_2 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfbG5"
@@ -68,6 +77,7 @@ if __name__ == '__main__':
                                   "sX3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2Fyb3VzZWxfaXRlbS5jMi1DMy5kYXN"
                                   "oX2Jhc2VsaW5lX2F")
     audio_identifying_string_6 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMxLUMzLmRhc2hfbG5"
+    audio_identifying_string_7 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmV4cGVyaW1lbnRhbC1DMy5kYXNoX2xu"
 
     list_of_video_types = []
     list_of_video_types.append(video_identifying_string_1)
@@ -85,7 +95,7 @@ if __name__ == '__main__':
     list_of_video_types.append(video_identifying_string_13)
     list_of_video_types.append(video_identifying_string_14)
     list_of_video_types.append(video_identifying_string_15)
-
+    list_of_video_types.append(video_identifying_string_16)
 
     list_of_audio_types = []
     list_of_audio_types.append(audio_identifying_string_1)
@@ -94,6 +104,7 @@ if __name__ == '__main__':
     list_of_audio_types.append(audio_identifying_string_4)
     list_of_audio_types.append(audio_identifying_string_5)
     list_of_audio_types.append(audio_identifying_string_6)
+    list_of_audio_types.append(audio_identifying_string_7)
 
     print("Login is required to download posts from private profiles, and to download saved posts.")
     username = input("Your instagram account Email or Username: ").replace(" ", "").replace(" ", "")
@@ -141,18 +152,19 @@ if __name__ == '__main__':
             EC.presence_of_element_located((By.XPATH,
                                             '//*[@class="x9f619 xvbhtw8 x78zum5 x5ur3kl xopu45v x1bs97v6 xmo9t06 x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x168nmei x13lgxp2 x5pf9jr xo71vjh x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'))
         )
-    except Exception as e:
+    except TimeoutException as e:
         print("Error Authenticating User, Please Ensure Credentials are Correct.")
         driver.quit()
         quit()
 
     print("Login successful!")
     while True:
+        clear_input_buffer()
 
-        program_option = int(input("Choose an option:\nEnter '1' to Download All Instagram Posts From a Profile\n"
+        program_option = input("Choose an option:\nEnter '1' to Download All Instagram Posts From a Profile\n"
                                "Enter '2' to Download Saved Posts From Your Instagram Account\n"
-                                   "Enter '3' to Exit Program\n"))
-        if program_option == 1:
+                                   "Enter '3' to Exit Program\n").strip()
+        if program_option == '1':
             print("")
             instagram_link = input(
                 "Enter an instagram profile link\nAny other link will result in undetermined program behavior"
@@ -165,7 +177,7 @@ if __name__ == '__main__':
                              , password
                              , list_of_video_types
                              , list_of_audio_types)
-        elif program_option == 2:
+        elif program_option == '2':
             print("")
             while True:
                 saved_option = input("Enter 'all' to Download Every Saved Post\nEnter a Number to Download a Specific Amount Starting From the Top\n").lower()
@@ -186,5 +198,9 @@ if __name__ == '__main__':
                              , list_of_video_types
                              , list_of_audio_types,saved_option)
 
-        elif program_option == 3:
+        elif program_option == '3':
             quit()
+
+        else:
+            print("")
+            print("Please input a valid option")
