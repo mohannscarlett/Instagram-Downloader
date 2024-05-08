@@ -40,6 +40,7 @@ def clear_input_buffer():
         # For non-Windows systems
         sys.stdin.read()
 
+
 if __name__ == '__main__':
     video_identifying_string_1 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF92cDll"
     video_identifying_string_2 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfdn"
@@ -166,17 +167,31 @@ if __name__ == '__main__':
                                    "Enter '3' to Exit Program\n").strip()
         if program_option == '1':
             print("")
+            while True:
+                saved_option = input(
+                    "Enter 'all' to Download Every Post From the Instagram Profile\nEnter a Number to Download a "
+                    "Specific Amount Starting From the Top\n").lower()
+                if saved_option == "all":
+                    break
+                else:
+                    try:
+                        saved_option = int(saved_option)
+                        break
+                    except Exception as e:
+                        print("Please Enter a Valid Number")
+
+            print("")
             instagram_link = input(
                 "Enter an instagram profile link\nAny other link will result in undetermined program behavior"
                 "\nExample profile link: https://www.instagram.com/mrbeast/"
                 "\nTo download from private accounts, the account you authenticate with must follow that user"
-                "\nEnter link: ").replace(" ", "")
+                "\nEnter link: ").strip()
 
-            download_profile(driver,instagram_link
+            download_profile(driver, instagram_link
                              , username
                              , password
                              , list_of_video_types
-                             , list_of_audio_types)
+                             , list_of_audio_types, saved_option)
         elif program_option == '2':
             print("")
             while True:

@@ -277,7 +277,8 @@ def get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types):
     return ["", ""]
 
 
-def download_profile(driver,profile_url, username, password, list_of_video_types, list_of_audio_types):
+def download_profile(driver,profile_url, username, password, list_of_video_types, list_of_audio_types,
+                     number_posts_to_download):
 
     error_logs = []
     profile_name = None
@@ -340,9 +341,10 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
     failed_visual_videos = set()
     failed_audio_videos = set()
     post_url_set = set()
+    main_loop = 1
+    loop_count = 0
 
-
-    while posts_visited != number_of_posts:
+    while main_loop:
         files_from_current_post = []
         # driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
         # time.sleep(scroll_timeout)
@@ -465,53 +467,55 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
                 try:
                     video_link = get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types)
                     #print(video_link)
-                    for i in range (len(video_link[0])):
-                        if (download_insta_video(profile_name, -1, video_link[0][i], current_directory) == "" and
-                            download_insta_video(profile_name, -2, video_link[1][i], current_directory)) == "":
-                            current_date_time = datetime.now()
-                            current_date = current_date_time.date()
-                            file_name = profile_name + "_" + str(current_file_number) + "_" + str(current_date) + ".mp4"
-                            #print("video link: " + video_link[0][i], "Audio link: " + video_link[1][i])
+                    worked = True
+                    if video_link == ["", ""]:
+                        # failed_visual_videos.add(video_link[0][i])
+                        # failed_audio_videos.add(video_link[1][i])
+                        post_url_set.add(driver.current_url)
+                        worked = False
+                    else:
+                        for i in range(len(video_link[0])):
 
-                            if_worked = True
-                            if video_link[0][i] == "" and video_link[1][i] == "":
-                                failed_visual_videos.add(video_link[0][i])
-                                failed_audio_videos.add(video_link[1][i])
-                                post_url_set.add(driver.current_url)
-                                if_worked = False
-                                break
-                                # next_button_visible = False
-                            elif video_link[1][i] == "":
-                                failed_visual_videos.add(video_link[1][i])
-                                post_url_set.add(driver.current_url)
-                                if_worked = False
-                                # next_button_visible = False
-                            elif video_link[1][i] == "":
-                                failed_audio_videos.add(video_link[1][i])
-                                # post_url_set.add(driver.current_url)
-                                # next_button_visible = False
-                                # if_worked = False
+                            if (download_insta_video(profile_name, -1, video_link[0][i], current_directory) == "" and
+                                download_insta_video(profile_name, -2, video_link[1][i], current_directory)) == "":
+                                current_date_time = datetime.now()
+                                current_date = current_date_time.date()
+                                file_name = profile_name + "_" + str(current_file_number) + "_" + str(
+                                    current_date) + ".mp4"
+                                #print("video link: " + video_link[0][i], "Audio link: " + video_link[1][i])
 
-                            if if_worked:
-                                video_file_hash = calculate_file_hash("temporary_visual_video.mp4")
-                                video_audio_hash = calculate_file_hash("temporary_audio_video.mp4")
-                                if video_file_hash != video_audio_hash:
-                                    combine_video_audio("temporary_visual_video.mp4", "temporary_audio_video.mp4",
-                                                        directory + file_name, driver)
-                                    files_from_current_post.append(directory + file_name)
-                                    current_file_number += 1
-                                else:
+                                # next_button_visible = False
+                                """elif video_link[1][i] == "":
+                                    failed_visual_videos.add(video_link[1][i])
                                     post_url_set.add(driver.current_url)
-                                    # next_button_visible = False
                                     if_worked = False
-                                    break
+                                    # next_button_visible = False
+                                elif video_link[1][i] == "":
+                                    failed_audio_videos.add(video_link[1][i])
+                                    # post_url_set.add(driver.current_url)
+                                    # next_button_visible = False
+                                    # if_worked = False"""
 
-                        else:
-                            for i in video_link:
-                                print("Unexpected program error, exiting.")
-                                driver.quit
-                                quit()
-                                #print("URL: " + video_link[i] + "Failed to print")
+                                if worked:
+                                    video_file_hash = calculate_file_hash("temporary_visual_video.mp4")
+                                    video_audio_hash = calculate_file_hash("temporary_audio_video.mp4")
+                                    if video_file_hash != video_audio_hash:
+                                        combine_video_audio("temporary_visual_video.mp4", "temporary_audio_video.mp4",
+                                                            directory + file_name, driver)
+                                        files_from_current_post.append(directory + file_name)
+                                        current_file_number += 1
+                                    else:
+                                        post_url_set.add(driver.current_url)
+                                        # next_button_visible = False
+                                        worked = False
+                                        break
+
+                            else:
+                                for j in video_link:
+                                    print("Unexpected program error, exiting.")
+                                    driver.quit()
+                                    quit()
+                                    # print("URL: " + video_link[i] + "Failed to print")
                 except Exception as e:
                     print(e)
 
@@ -519,6 +523,7 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
         next_post = None
         try:
             buttons = driver.find_elements(by=By.XPATH, value='//*[@class="_abl-"]')
+            button_exists = False
             for i in buttons:
                 try:
                     next_post = i.find_element(by=By.XPATH,
@@ -526,10 +531,18 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
                     driver.execute_script("window.performance.clearResourceTimings();")
                     time.sleep(video_render_sleep_single)
                     driver.execute_script("arguments[0].click();", i)
+                    button_exists = True
+                    loop_count += 1
                     break
                 except NoSuchElementException:
                     pass
-        except Exception:
+            if number_posts_to_download == 'all':
+                if not button_exists:
+                    main_loop = 0
+            else:
+                if loop_count == number_posts_to_download:
+                    main_loop = 0
+        except Exception as e:
             print("Critical Program error while going to next post")
             driver.quit()
             quit()
