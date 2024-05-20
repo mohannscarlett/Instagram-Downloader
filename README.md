@@ -20,6 +20,10 @@ This Python project is an Instagram downloader built using Selenium. It allows u
 3. **Install the required dependencies**:
    ```bash
    pip install selenium
+   pip install moviepy
+   pip install pymediainfo
+   pip install mutagen
+   pip install beautifulsoup4
    ```
 
 ## Usage
