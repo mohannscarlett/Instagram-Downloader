@@ -285,7 +285,7 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
     page_loading_time = 7.5
     scroll_timeout = 0.5
     video_render_sleep = 1.25
-    video_render_sleep_single = 1.5
+    video_render_sleep_single = 2
 
 
     driver.get(profile_url)

@@ -517,7 +517,8 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
         pass
     for i in post_url_set:
         print("Failed this post: " + i)
-    print("Finished Trying to Download Missed Posts but the Above were Missed!!")
+    if len(post_url_set) >= 1:
+        print("Finished Trying to Download Missed Posts but the Above were Missed!!")
 
 
 

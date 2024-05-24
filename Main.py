@@ -42,70 +42,29 @@ def clear_input_buffer():
 
 
 if __name__ == '__main__':
-    video_identifying_string_1 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF92cDll"
-    video_identifying_string_2 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfdn"
-    video_identifying_string_3 = "_video_dashinit.mp4"
-    video_identifying_string_4 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfaGlna"
-    video_identifying_string_5 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfcjJldmV2c"
-    video_identifying_string_6 = (
-        "eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2lsX"
-        "3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2Fyb3VzZWxfaXRlbS5jMi1DMy5kYXNoX"
-        "3ZwOWV")
-    video_identifying_string_7 = (
-        "eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2lsX"
-        "3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2xpcHMuYzItQzMuZGFzaF9yMmV2")
-    video_identifying_string_8 = ("efg=eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2ls"
-                                  "X3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2xpcHMuYzItQzMuZGFzaF92cDll")
-
-    video_identifying_string_9 = ("eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2ls"
-                                  "X3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2Fyb3VzZWxfaXRlbS5jMi1DMy5kYXN"
-                                  "oX2Jhc2VsaW5lXzF")
-    video_identifying_string_10 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfcjJldmV2c"
-    video_identifying_string_11 = "9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMxLUMzLmRhc2hfaGlna"
-    video_identifying_string_12 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9oaW"
-    video_identifying_string_13 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMV92MS"
-    video_identifying_string_14 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV8"
-    video_identifying_string_15 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfMTA"
-    video_identifying_string_16 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmV4cGVyaW1lbnRhbC1DMy5kYXNoX2hp"
-
-    audio_identifying_string_1 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNhcm91c2VsX2l0ZW0uYzItQzMuZGFzaF9iYXNlbGluZV9"
-    audio_identifying_string_2 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfbG5"
-    audio_identifying_string_3 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMyLUMzLmRhc2hfYmFzZWxpbmVfYXVkaW9fdjEi"
-    audio_identifying_string_4 = (
-        "eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2lsX3Vyb"
-        "F92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2Fyb3VzZWxfaXRlbS5jMi1DMy5kYXNoX2Jhc2V")
-    audio_identifying_string_5 = ("efg=eyJxZV9ncm91cHMiOlsiaWdfZXZlcnN0b3JlX3RvX29pbDppZ19kYXNoX2RlbGl2ZXJ5X292ZXJfb2l"
-                                  "sX3VybF92Mjp0ZXN0Il0sInZlbmNvZGVfdGFnIjoiaWcteHB2ZHMuY2Fyb3VzZWxfaXRlbS5jMi1DMy5kYXN"
-                                  "oX2Jhc2VsaW5lX2F")
-    audio_identifying_string_6 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmMxLUMzLmRhc2hfbG5"
-    audio_identifying_string_7 = "eyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmV4cGVyaW1lbnRhbC1DMy5kYXNoX2xu"
 
     list_of_video_types = []
-    list_of_video_types.append(video_identifying_string_1)
-    list_of_video_types.append(video_identifying_string_2)
-    list_of_video_types.append(video_identifying_string_3)
-    list_of_video_types.append(video_identifying_string_4)
-    list_of_video_types.append(video_identifying_string_5)
-    list_of_video_types.append(video_identifying_string_6)
-    list_of_video_types.append(video_identifying_string_7)
-    list_of_video_types.append(video_identifying_string_8)
-    list_of_video_types.append(video_identifying_string_9)
-    list_of_video_types.append(video_identifying_string_10)
-    list_of_video_types.append(video_identifying_string_11)
-    list_of_video_types.append(video_identifying_string_12)
-    list_of_video_types.append(video_identifying_string_13)
-    list_of_video_types.append(video_identifying_string_14)
-    list_of_video_types.append(video_identifying_string_15)
-    list_of_video_types.append(video_identifying_string_16)
-
     list_of_audio_types = []
-    list_of_audio_types.append(audio_identifying_string_1)
-    list_of_audio_types.append(audio_identifying_string_2)
-    list_of_audio_types.append(audio_identifying_string_3)
-    list_of_audio_types.append(audio_identifying_string_4)
-    list_of_audio_types.append(audio_identifying_string_5)
-    list_of_audio_types.append(audio_identifying_string_6)
-    list_of_audio_types.append(audio_identifying_string_7)
+
+    with open('VideoIdentifyingStrings.txt', 'r') as file:
+        # Read each line
+        for line in file:
+            # Skip empty lines
+            if line.strip() == '':
+                continue
+
+            # Split the line based on comma
+            parts = line.strip().split(',')
+            if len(parts) == 2:  # Ensure there's both string and letter
+                string = parts[0].strip()  # Extract string
+                letter = parts[1].strip()  # Extract letter
+                if letter == 'v':
+                    list_of_video_types.append(string)
+                elif letter == 'a':
+                    list_of_audio_types.append(string)
+            else:
+                print("VideoIdentifyingStrings.txt is corrupted, please download a new copy")
+                quit()
 
     print("Login is required to download posts from private profiles, and to download saved posts.")
     username = input("Your instagram account Email or Username: ").replace(" ", "").replace(" ", "")
@@ -182,11 +141,12 @@ if __name__ == '__main__':
 
             print("")
             instagram_link = input(
-                "Enter an instagram profile link\nAny other link will result in undetermined program behavior"
-                "\nExample profile link: https://www.instagram.com/mrbeast/"
+                "Enter an instagram profile username"
+                "\nExample username link: mrbeast"
                 "\nTo download from private accounts, the account you authenticate with must follow that user"
-                "\nEnter link: ").strip()
+                "\nEnter username: ").strip()
 
+            instagram_link = "https://www.instagram.com/" + instagram_link
             download_profile(driver, instagram_link
                              , username
                              , password
