@@ -1,5 +1,7 @@
 #Instagram Profile Downloader
 #Mohann Scarlett 11/27/2023
+print("\nInitializing startup components...", end='\n\n')
+
 import time
 import sys
 import getpass
@@ -10,6 +12,7 @@ import hashlib
 import subprocess
 import json
 
+from channels.auth import login
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.firefox.service import Service
@@ -69,33 +72,70 @@ if __name__ == '__main__':
     print("Login is required to download posts from private profiles, and to download saved posts.")
     username = input("Your instagram account Email or Username: ").replace(" ", "").replace(" ", "")
     password = input("Your instagram account password: ")
+    print("\nEnabling selenium obfuscation mechanisms...", end='\n\n')
 
+    # Define the User-Agent string
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0"
+    profile = webdriver.FirefoxProfile('C:\\Users\\mohan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\zi2kquxl.default-release')
+    # Set up Firefox options
     options = webdriver.FirefoxOptions()
+
     # Uncomment the following line if you want to run in headless mode
     options.add_argument("--headless")
+
+    # Set custom User-Agent
+    options.set_preference("general.useragent.override", user_agent)
+
+    # Additional Firefox preferences
     options.set_preference("dom.webnotifications.enabled", False)
     options.set_preference("dom.infobar.enabled", False)
     options.set_preference("browser.log.level", "error")
     options.set_preference("devtools.jsonview.enabled", False)
+    options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'  # Adjust to your Firefox binary path
 
+    # Set up geckodriver service
     service = Service(executable_path='geckodriver.exe')
+
+    # Initialize WebDriver
     driver = webdriver.Firefox(service=service, options=options)
+
+    # Execute script to clear resource timings
     driver.execute_script("window.performance.clearResourceTimings();")
+    # Code below is to bypass selenium detecting modules run on websites like instagram
     # Suppress console logs using JavaScript
+    # Define both scripts (one for hiding WebDriver properties and the other for suppressing console logs)
     script = '''
+        // Hide WebDriver properties
+        Object.defineProperty(navigator, 'webdriver', {get: function() {return undefined;}});
+        Object.defineProperty(navigator, 'webdriver-active', {get: function() {return undefined;}});
+        Object.defineProperty(navigator, 'plugins', {get: function() {return []; }});
+        Object.defineProperty(navigator, 'languages', {get: function() {return ['en-US', 'en']; }});
+        Object.defineProperty(navigator, 'mediaDevices', {get: function() {return {}; }});
+        Object.defineProperty(navigator, 'deviceMemory', {get: function() {return 8;}});
+        Object.defineProperty(navigator, 'hardwareConcurrency', {get: function() {return 4;}});
+        Object.defineProperty(navigator, 'platform', {get: function() {return 'Win32'; }});
+
+        // Suppress console logs
         var console = {
             log: function() {},
             warn: function() {},
             error: function() {}
         };
-        '''
+    '''
+
+    # Execute both scripts using driver.execute_script
     driver.execute_script(script)
 
     print("\nAuthenticating user... ", end='\n\n')
     time.sleep(2)
     driver.get("https://www.instagram.com")
-
-
+    """WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@class="x5yr21d  _acan _acao _acas _aj1- _ap30"]'))
+    )
+    login_screen = driver.find_element(by=By.XPATH, value='//*[@class="x5yr21d  _acan _acao _acas _aj1- _ap30"]')
+    login_screen.click()
+    
+    """
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, '//*[@class="_aa4b _add6 _ac4d _ap35"]'))
     )
@@ -104,13 +144,17 @@ if __name__ == '__main__':
     input_fields = driver.find_elements(by=By.XPATH, value='//*[@class="_aa4b _add6 _ac4d _ap35"]')
     input_fields[0].send_keys(username)
     input_fields[1].send_keys(password)
-    login_button = driver.find_element(by=By.XPATH, value='//*[@class=" _acan _acap _acas _aj1- _ap30"]')
+
+    login_buttons = driver.find_elements(by=By.XPATH, value='//*[@class=" _acan _acap _acas _aj1- _ap30"]')
 
     try:
-        login_button.click()
+        if len(login_buttons) > 1:
+            login_buttons[1].click()
+        else:
+            login_buttons[0].click()
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH,
-                                            '//*[@class="x9f619 xvbhtw8 x78zum5 x5ur3kl xopu45v x1bs97v6 xmo9t06 x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x168nmei x13lgxp2 x5pf9jr xo71vjh x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'))
+                                            '//*[@class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xw7yly9 x1yztbdb x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'))
         )
     except TimeoutException as e:
         print("Error Authenticating User, Please Ensure Credentials are Correct.")

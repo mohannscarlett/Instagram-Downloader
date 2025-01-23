@@ -339,7 +339,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
         post_container = None
         try:
             post_container = driver.find_element(by=By.XPATH,
-                                                 value='//*[@class="x1ey2m1c x9f619 xds687c x10l6tqk x17qophe x13vifvy x1ypdohk"]')
+                                                 value='//*[@class="x1ey2m1c x9f619 xds687c x17qophe x10l6tqk x13vifvy x1ypdohk"]')
         except NoSuchElementException:
             post_container = driver.find_element(by=By.XPATH,
                                                  value='//*[@class="_aatk _aatl"]')
@@ -497,7 +497,7 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
                         else:
                             for i in video_link:
                                 print("Unexpected program error, exiting.")
-                                driver.quit
+                                driver.quit()
                                 quit()
                                 #print("URL: " + video_link[i] + "Failed to print")
                 except Exception as e:
@@ -509,6 +509,8 @@ def download_failed_posts(driver,list_of_video_types, list_of_audio_types,parent
         sys.stdout.flush()
         print()
         posts_visited += 1
+        if posts_visited == 20:
+            time.sleep(120)
 
     failed_video_downloads = set()
     failed_image_downloads = set()

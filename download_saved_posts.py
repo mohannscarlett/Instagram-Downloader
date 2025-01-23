@@ -131,7 +131,7 @@ def get_video_link(driver, list_of_video_types, list_of_audio_types):
         for entry in network_data:
             if substring_to_find in entry['name']:
                 video_link = entry.get('name')
-                #print(video_link)
+                print(video_link)
                 # Find the index of '&bytestart'
                 index = video_link.find('&bytestart')
                 if index != -1:  # Check if '&bytestart' is found in the URL
@@ -196,7 +196,7 @@ def get_video_link_scrolling(driver, list_of_video_types, list_of_audio_types):
         for entry in network_data:
             if substring_to_find in entry['name']:
                 video_link = entry.get('name')
-                #print(video_link)
+                print(video_link)
                 # Find the index of '&bytestart'
                 index = video_link.find('&bytestart')
                 if index != -1:  # Check if '&bytestart' is found in the URL
@@ -274,8 +274,8 @@ def download_saved_posts(driver, profile_url, username, password, list_of_video_
     profile_name = "Saved"
     page_loading_time = 7.5
     scroll_timeout = 0.5
-    video_render_sleep = 1.25
-    video_render_sleep_single = 2
+    video_render_sleep = 1.5
+    video_render_sleep_single = 3
 
     print("\nLoading saved posts ", end='\n\n')
     driver.get(profile_url)
@@ -348,6 +348,13 @@ def download_saved_posts(driver, profile_url, username, password, list_of_video_
             # is a stand alone video
             pass
 
+        try:
+            profile_name_container = driver.find_element(by=By.XPATH,
+                                                 value='//*[@class="x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz  _acan _acao _acat _acaw _aj1- _ap30 _a6hd"]')
+            profile_name = profile_name_container.text
+        except NoSuchElementException:
+            profile_name = "Instagram_saved"
+
         image_found = get_image_link(driver, post_container, final_picture_set, 0)
         if isinstance(image_found, str) and image_found not in final_picture_set:
             final_picture_set.add(image_found)
@@ -361,7 +368,7 @@ def download_saved_posts(driver, profile_url, username, password, list_of_video_
                     current_date_time = datetime.now()
                     current_date = current_date_time.date()
                     file_name = profile_name + "_" + str(current_file_number) + "_" + str(current_date) + ".mp4"
-                    #print("video link: " + video_link[0], "Audio link: " + video_link[1])
+                    print("video link: " + video_link[0], "Audio link: " + video_link[1])
 
                     if video_link[0] == "" and video_link[1] == "":
                         failed_visual_videos.add(video_link[0])
@@ -496,20 +503,23 @@ def download_saved_posts(driver, profile_url, username, password, list_of_video_
         buttons = None
         next_post = None
         try:
-            buttons = driver.find_elements(by=By.XPATH, value='//*[@class="_abl-"]')
+            #buttons = driver.find_elements(by=By.XPATH, value='//*[@class="_abm0"]')
             button_exists = False
-            for i in buttons:
-                try:
-                    next_post = i.find_element(by=By.XPATH,
-                                               value='.//*[@style="display: inline-block; transform: rotate(90deg);"]')
-                    driver.execute_script("window.performance.clearResourceTimings();")
-                    time.sleep(video_render_sleep_single)
-                    driver.execute_script("arguments[0].click();", i)
-                    button_exists = True
-                    loop_count += 1
-                    break
-                except NoSuchElementException:
-                    pass
+            #for i in buttons:
+            try:
+                next_post_holder = driver.find_element(by=By.XPATH, value='//*[@class=" _aaqg _aaqh"]')
+                """if next_post is None:
+                    print("next_post_holder is none")"""
+                next_post = next_post_holder.find_element(by=By.XPATH, value='.//*[@class="_abl-"]')
+                """if next_post is None:
+                    print("Next post is none")"""
+                driver.execute_script("window.performance.clearResourceTimings();")
+                time.sleep(video_render_sleep_single)
+                driver.execute_script("arguments[0].click();", next_post)
+                button_exists = True
+                loop_count += 1
+            except Exception:
+                pass
             if number_posts_to_download == 'all':
                 if not button_exists:
                     main_loop = 0
@@ -522,6 +532,8 @@ def download_saved_posts(driver, profile_url, username, password, list_of_video_
             quit()
 
         number_posts_downloaded += 1
+        if number_posts_downloaded == 20:
+            time.sleep(120)
         sys.stdout.write("\rDownloaded posts:  " + str(number_posts_downloaded) + "/" + str(number_posts_to_download) + "\n")
         sys.stdout.flush()
         print()

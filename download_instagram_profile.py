@@ -291,17 +291,11 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
     driver.get(profile_url)
 
     WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@class="x1lliihq x1plvlek xryxfnj x1n2onr6 x193iq5w xeuugli '
-                                                  'x1fj9vlw x13faqbe x1vvkbs x1s928wv xhkezso x1gmr53x x1cpjm7i '
-                                                  'x1fgarty x1943h6x x1i0vuye x1ms8i2q xo1l8bm x5n08af x10wh9bi '
-                                                  'x1wdrske x8viiok x18hxmgj"]'))
+        EC.presence_of_element_located((By.XPATH, '//*[@class="x1lliihq x193iq5w x6ikm8r x10wlt62 xlyipyv xuxw1ft"]'))
     )
 
     username_element = driver.find_element(by=By.XPATH,
-                                           value='//*[@class="x1lliihq x1plvlek xryxfnj x1n2onr6 x193iq5w xeuugli '
-                                                 'x1fj9vlw x13faqbe x1vvkbs x1s928wv xhkezso x1gmr53x x1cpjm7i '
-                                                 'x1fgarty x1943h6x x1i0vuye x1ms8i2q xo1l8bm x5n08af x10wh9bi '
-                                                 'x1wdrske x8viiok x18hxmgj"]')
+                                           value='//*[@class="x1lliihq x193iq5w x6ikm8r x10wlt62 xlyipyv xuxw1ft"]')
     profile_name = username_element.text
 
     profile_info = driver.find_elements(by=By.XPATH,
@@ -317,7 +311,7 @@ def download_profile(driver,profile_url, username, password, list_of_video_types
     posts_visited = 0
     current_file_number = 0
     number_posts_downloaded = 0
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 10).until( #MAIN content holder pane, with each post element inside
         EC.presence_of_element_located((By.XPATH, '//*[@style="display: flex; flex-direction: column; padding-bottom: 0px; padding-top: 0px; position: relative;"]'))
     )
     post_holding_field = driver.find_element(by=By.XPATH,
